@@ -1,0 +1,25 @@
+version: "3.8"
+services: 
+    
+    api:
+        build: ./backend
+        command: gunicorn --bind 0.0.0.0:8000 backend.wsgi:app -w 1 -k uvicorn.workers.UvicornWorker & gunicorn --limit-request-line 0
+        volumes: 
+            - .:/code
+        ports: 
+            - "8000:8000"
+    
+    client:
+        image: node:12
+        ports: 
+            - '3000:3000'
+        build: ./frontend
+        volumes: 
+            - .:/front
+        working_dir: /front/frontend
+        command:  'yarn start'
+        
+        depends_on: 
+            - api
+
+        #futuro quando colocar db não esquecer o .env!!!
