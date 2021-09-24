@@ -15,3 +15,46 @@ tempCodeRunnerFile.py
 #Arquivos de debug e lista de afazeres
 log.txt
 todo.md
+
+#front
+frontend/lib-cov
+frontend/*.seed
+frontend/*.log
+frontend/*.csv
+frontend/*.dat
+frontend/*.out
+frontend/*.pid
+frontend/*.gz
+frontend/*.swp
+
+frontend/pids
+frontend/logs
+frontend/results
+frontend/tmp
+
+# Build
+frontend/public/css/main.css
+
+# Coverage reports
+frontend/coverage
+
+# API keys and secrets
+frontend/.env
+
+# Dependency directory
+frontend/node_modules
+frontend/bower_components
+
+# Editors
+frontend/.idea
+frontend/*.iml
+
+# OS metadata
+frontend/.DS_Store
+frontend/Thumbs.db
+
+# Ignore built ts files
+frontend/dist/**/*
+
+# ignore yarn.lock
+frontend/yarn.lock
