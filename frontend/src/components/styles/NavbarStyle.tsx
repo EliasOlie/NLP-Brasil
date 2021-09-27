@@ -9,6 +9,7 @@ const NavbarStyle = styled.div`
 
     padding: 1rem 1rem 0 1rem;
 
+    display: flex;
     
     .nav-wrapper{
         
@@ -17,30 +18,17 @@ const NavbarStyle = styled.div`
         display: flex;
         flex-direction: row;
     }
-
-    .navb{
-        display: flex;
-        justify-content: flex-end
-    }
-
-    img{
-        width: 8vw;
-        background-color: #${COLORS.LIGHTGREEN};
-
-    }
-
-    li{
-
-        list-style: none;
-        background-color: #${COLORS.LIGHTGREEN};
-
-    }
+   
     a{
+        width: 10rem;
+        background-color: inherit;
         text-decoration: none;
-        background-color: #${COLORS.LIGHTGREEN};
 
+        color: #${COLORS.YELLOW};
+        font-weight: 600
 
     }
+
 `;
 
-export default NavbarStyle
+export default NavbarStyle 

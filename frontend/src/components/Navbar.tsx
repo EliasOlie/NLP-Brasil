@@ -1,12 +1,11 @@
-import image from './media/logo.svg'
 import NavbarStyle from './styles/NavbarStyle';
+import NlStyle from './styles/NavLinkStyle';
 
 export default function Navbar() {
     return (
         <NavbarStyle>
-            <div className="nav-wrapper">
-                <a href="/"><img src={image} alt="<NLP/> Brasil"/></a>
-                <div className="navb">
+                <a href="/">{"<NLP/> Brasil"}</a>
+                <NlStyle>
                     <ul>
                         <li>
                             <a href="/contato">Contato</a>
@@ -17,8 +16,7 @@ export default function Navbar() {
                             <a href="/sobre">Sobre</a>
                         </li>
                     </ul>
-                </div>
-            </div>
+                </NlStyle>
         </NavbarStyle>
         
 
