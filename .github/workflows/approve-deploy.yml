@@ -44,7 +44,7 @@ jobs:
 
           # (Optional, default: "Dockerfile")
           # Dockerfile name.
-          dockerfile_name: Docker-compose.yml
+          dockerfile_name: Docker-compose.yaml
 
           # (Optional, default: "")
           # Additional options of docker build command.
