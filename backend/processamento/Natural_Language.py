@@ -13,7 +13,7 @@ TODO:
 polaridade = NewType('Polaridade', int)
 indice_confianca = NewType('Indice de confianca', [float or str])
 # with open('./processamento/nlp_database.json', 'r', encoding='utf-8') as json_file:
-with open('backend/processamento/nlp_database2.json', 'r', encoding='utf-8') as json_file:
+with open('backend/processamento/nlp_database.json', 'r', encoding='utf-8') as json_file:
     dados = json.load(json_file)
 
 class NLP(object):
