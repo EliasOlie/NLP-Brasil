@@ -7,12 +7,13 @@ TODO:
 • Aumentar lista de palavras com contexto (__atribuir_contexto) ✖
 • Errors do nível baixo e escalar eles
 • Validar dados (não deixar "" ser processado por exemplo)
-• Melohrar respostas
+• Melhorar respostas
 """
 
 polaridade = NewType('Polaridade', int)
 indice_confianca = NewType('Indice de confianca', [float or str])
-with open('backend/processamento/nlp_database2.json', 'r', encoding='utf-8') as json_file:
+with open('processamento/nlp_database2.json', 'r', encoding='utf-8') as json_file:
+# with open('backend/processamento/nlp_database2.json', 'r', encoding='utf-8') as json_file:
     dados = json.load(json_file)
 
 class NLP(object):

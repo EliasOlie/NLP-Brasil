@@ -1,11 +1,13 @@
 version: "3.8"
 services: 
-    
+   
     api:
         build: ./backend
-        command: gunicorn --bind 0.0.0.0:8000 backend.wsgi:app -w 1 -k uvicorn.workers.UvicornWorker & gunicorn --limit-request-line 0
+        command: gunicorn --bind 0.0.0.0:8000 wsgi:app -w 1 -k uvicorn.workers.UvicornWorker & gunicorn --limit-request-line 0
         volumes: 
             - .:/code
+        working_dir:
+            /code/backend
         ports: 
             - "8000:8000"
     
@@ -21,5 +23,3 @@ services:
         
         depends_on: 
             - api
-
-        #futuro quando colocar db não esquecer o .env!!!

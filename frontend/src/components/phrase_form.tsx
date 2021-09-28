@@ -43,8 +43,8 @@ export default function MyForm() {
 	const [phrase, setPhrase] = useState<IPhrase>()
 	const [hidden, setHidden] = useState(false)
 	const formRef = useRef<FormHandles>(null)
-	const handleSubmit: SubmitHandler<IForm> = data => {
-		api.post(
+	const handleSubmit: SubmitHandler<IForm> = async data => {
+		await api.post(
 			'/processing',
 			data
 		).then((Response) => {
@@ -52,6 +52,7 @@ export default function MyForm() {
 			setPhrase(Response.data.data);
 		
 		})
+	
 	}
 	
 	return(

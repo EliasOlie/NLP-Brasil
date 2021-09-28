@@ -4,15 +4,21 @@ import COLORS from "./Colors";
 const NlStyle = styled.nav`
     display: flex;
     flex-direction: row;
-    padding: 0 1rem;
-    justify-content: flex-end;
     background-color: inherit;
     
+    position: relative;
+    left: 80%;
+    
+    ul{
+        display: flex;
+        padding: 1rem 0;
+        background-color: inherit;
+
+    }
+
     li{
-
+        background-color: inherit;
         list-style: none;
-
-        margin-left: 1rem;
 
     }
     a{
