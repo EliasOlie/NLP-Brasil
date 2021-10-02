@@ -5,7 +5,6 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: production
     strategy:
       matrix:
         python-version: [3.9]
@@ -21,22 +20,21 @@ jobs:
           python -m pip install pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Test with pytest
-        run: |
-          pytest
-
-   deploy-prod:
-    - name: Deploy container
-      runs-on: ubuntu-latest
-      environment: production
-      uses: gonuit/heroku-docker-deploy@v1.3.3
-      with:
+        run: pytest 
+  deploy-prod:
+    runs-on: ubuntu-latest
+    name: Deploy container
+    environment: production
+    
+    uses: gonuit/heroku-docker-deploy@v1.3.3
+    with:
 
         email: ${{ secrets.HEROKU_EMAIL }}
 
         # Heroku API key associated with provided user's email.
         # Api Key is available under your Heroku account settings.
         heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          
+
         # Name of the heroku application to which the build is to be sent.
         heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
 
