@@ -1,14 +1,20 @@
 #FastApi Stuff
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import socket
+
+#Libs
+import json
+from datetime import datetime
+import os
 
 # Core do processamento
 from processamento.Natural_Language import NLP
 
 #Responses and other imports
-from models.Response import Response
 from models.Phrase import ProccessPhrase
+from utils.makeissue import make_issue
+from models.Response import Response
+from models.ReviewPhrase import ReviewPhrase
 
 app = FastAPI()
 
@@ -25,6 +31,10 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+@app.on_event('startup')
+def getpath():
+    print(os.path.basename('./'))
+
 @app.post('/processing')
 def proc_phrase(phrase: ProccessPhrase):
     processed_response = NLP(phrase.phrase).process
@@ -36,3 +46,11 @@ def debg(phrase):
     processed_response = NLP(phrase).process
   
     return Response(200, processed_response)
+
+@app.post('/stack/review')
+def review_phrase(phrase: ReviewPhrase):
+    token = os.getenv("GH_TOKEN")
+    
+    make_issue(token, phrase.phrase, phrase.comment)
+
+    return Response(200)
