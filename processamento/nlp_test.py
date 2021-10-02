@@ -1,7 +1,7 @@
 # coding=<utf-8>    
 
 import pytest
-import processamento.Natural_Language as Natural_Language
+from . import Natural_Language
 import json
 # import Natural_Language
 """
