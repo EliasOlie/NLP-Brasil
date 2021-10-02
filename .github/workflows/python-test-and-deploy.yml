@@ -27,7 +27,7 @@ jobs:
     environment: production
     steps:
       - name: Sync repo
-        uses: actions/setup-python@v2
+        uses: actions/checkout@v2
       - name: Deploy to Heroku!
         uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
