@@ -23,6 +23,7 @@ jobs:
         run: |
           pytest
       - name: Deploy container
+        environment: production
         uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
 

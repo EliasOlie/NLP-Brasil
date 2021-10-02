@@ -1,7 +1,10 @@
 # coding=<utf-8>    
 
 import pytest
-import Natural_Language
+try:
+    import Natural_Language
+except ModuleNotFoundError:
+    from . import Natural_Language
 import json
 # import Natural_Language
 """
