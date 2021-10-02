@@ -26,7 +26,10 @@ jobs:
     name: Deploy container
     environment: production
     steps:
-      - uses: gonuit/heroku-docker-deploy@v1.3.3
+      - name: Sync repo
+        uses: actions/setup-python@v2
+      - name: Deploy to Heroku!
+        uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
 
           email: ${{ secrets.HEROKU_EMAIL }}
