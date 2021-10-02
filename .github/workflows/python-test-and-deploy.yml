@@ -27,7 +27,7 @@ jobs:
     environment: production
     steps:
       - uses: gonuit/heroku-docker-deploy@v1.3.3
-      - with:
+        with:
 
           email: ${{ secrets.HEROKU_EMAIL }}
 
