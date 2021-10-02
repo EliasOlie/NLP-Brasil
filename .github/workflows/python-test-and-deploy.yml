@@ -5,6 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     strategy:
       matrix:
         python-version: [3.9]
@@ -23,7 +24,6 @@ jobs:
         run: |
           pytest
       - name: Deploy container
-        environment: production
         uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
 
