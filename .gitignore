@@ -15,6 +15,9 @@ tempCodeRunnerFile.py
 #Arquivos de debug e lista de afazeres
 log.txt
 todo.md
+#back
+
+__init__.py
 
 #front
 frontend/lib-cov
