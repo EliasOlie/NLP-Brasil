@@ -20,19 +20,24 @@ jobs:
           python -m pip install pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Test with pytest
-        run: |
-          pytest
-      - name: Deploy container
-        environment: production
+        run: pytest 
+  deploy-prod:
+    runs-on: ubuntu-latest
+    name: Deploy container
+    environment: production
+    steps:
+      - name: Sync repo
+        uses: actions/checkout@v2
+      - name: Deploy to Heroku!
         uses: gonuit/heroku-docker-deploy@v1.3.3
         with:
 
           email: ${{ secrets.HEROKU_EMAIL }}
-          
+
           # Heroku API key associated with provided user's email.
           # Api Key is available under your Heroku account settings.
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          
+
           # Name of the heroku application to which the build is to be sent.
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
 
