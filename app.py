@@ -31,10 +31,6 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-@app.on_event('startup')
-def getpath():
-    print(os.path.basename('./'))
-
 @app.post('/processing')
 def proc_phrase(phrase: ProccessPhrase):
     processed_response = NLP(phrase.phrase).process

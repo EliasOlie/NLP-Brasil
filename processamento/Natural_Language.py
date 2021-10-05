@@ -107,7 +107,6 @@ class NLP(object):
                 "Frase": self.frase
                 
                 }
-        # retorno = json.dumps(retorno, ensure_ascii=False)
 
         return retorno
 
