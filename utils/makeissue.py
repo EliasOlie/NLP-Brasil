@@ -1,5 +1,4 @@
 from github import Github
-import os
 
 def make_issue(token, title, body):
 

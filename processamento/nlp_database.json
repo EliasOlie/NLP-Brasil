@@ -75,13 +75,13 @@
         "polaridade": 1
     },
     "a": {
-        "polaridade": -1
+        "polaridade": 0
     },
     "o": {
-        "polaridade": -1
+        "polaridade": 0
     },
     "os": {
-        "polaridade": -1
+        "polaridade": 0
     },
     "abespinhado": {
         "polaridade": -1
@@ -14835,7 +14835,7 @@
         "polaridade": -1
     },
     "é": {
-        "polaridade": -1
+        "polaridade": 0
     },
     "era": {
         "polaridade": -1
@@ -14856,7 +14856,7 @@
         "polaridade": -1
     },
     "está": {
-        "polaridade": -1
+        "polaridade": 0
     },
     "estado": {
         "polaridade": -1
@@ -14925,7 +14925,7 @@
         "polaridade": -1
     },
     "estava": {
-        "polaridade": -1
+        "polaridade": 0
     },
     "estavam": {
         "polaridade": -1
@@ -19114,6 +19114,9 @@
     },
     "qualificado": {
         "polaridade": 1
+    },
+    "que":{
+        "polaridade": 0
     },
     "quebrar": {
         "polaridade": -1

@@ -3,9 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 #Libs
-import json
-from datetime import datetime
 import os
+
 
 # Core do processamento
 from processamento.Natural_Language import NLP
@@ -15,6 +14,8 @@ from models.Phrase import ProccessPhrase
 from utils.makeissue import make_issue
 from models.Response import Response
 from models.ReviewPhrase import ReviewPhrase
+import processamento.models.Application_Exceptions
+import models.errors as API_ERR
 
 app = FastAPI()
 
@@ -33,15 +34,22 @@ app.add_middleware(
 
 @app.post('/processing')
 def proc_phrase(phrase: ProccessPhrase):
-    processed_response = NLP(phrase.phrase).process
-  
-    return Response(200, processed_response)
+    try:
+        processed_response = NLP(phrase.phrase).process
+        return Response(200, processed_response)
+    except processamento.models.Application_Exceptions.NoPhraseProvided:
+        return Response(422, API_ERR.NO_PHRASE_PROVIDED, True)
+
 
 @app.get('/test/{phrase}')
 def debg(phrase):
-    processed_response = NLP(phrase).process
+    try:
+        processed_response = NLP(phrase).process
+        return Response(200, processed_response)
+    except processamento.models.Application_Exceptions.NoPhraseProvided:
+        return Response(422, API_ERR.NO_PHRASE_PROVIDED, True)
+
   
-    return Response(200, processed_response)
 
 @app.post('/stack/review')
 def review_phrase(phrase: ReviewPhrase):

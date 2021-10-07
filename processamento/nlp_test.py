@@ -1,22 +1,19 @@
 # coding=<utf-8>    
 
 import pytest
+
+try:
+    import models.Application_Exceptions as Application_Exceptions
+except ModuleNotFoundError:
+    from .models import Application_Exceptions 
+
+
 try:
     import Natural_Language
 except ModuleNotFoundError:
     from . import Natural_Language
 import json
-"""
-TODO 
 
-• Mover frases para um json com frases ✔
-
-Invés de validar todos os dados de resposta, analisar apenas a polaridade, e talvez, o score.
-O problema de testar o score é que conforme mais palavras forem sendo classificadas o número de palavras
-conhecidas (que é uma variável para calcular o score) modificando assim o score e quebrando o teste;
-a não ser que invés de colocar num dataset o valor esperado calcular com um fetch na api
-
-"""
 """
 Creio que uma análise básica na polaridade é, pelo menos à principio o sulficiente para
 testar, porém, em breve teremos mais regras à seguir que demandarão mais testes
@@ -42,4 +39,12 @@ def test_main():
 
     assert true_test == len(testes)
 
+def test_no_phrase_provided():
+    phrase = ""
+    with pytest.raises(Application_Exceptions.NoPhraseProvided) as exc_info:
+        proccess = Natural_Language.NLP(phrase).process
+    assert exc_info.type is Application_Exceptions.NoPhraseProvided
+
+
 test_main()
+test_no_phrase_provided()

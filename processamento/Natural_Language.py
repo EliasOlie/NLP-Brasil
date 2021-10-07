@@ -1,6 +1,12 @@
 import json
 from typing import NewType
 
+try:
+    import models.Application_Exceptions as Application_Exceptions
+except ModuleNotFoundError:
+    from .models import Application_Exceptions 
+
+
 """
 TODO:
 • Refatorar código para não se repetir. Usar comprehensions ✖
@@ -33,9 +39,11 @@ class NLP(object):
 
         self.frase = frase
         self.process: object = self.__processar()
+        if len(frase) == 0:
+            raise Application_Exceptions.NoPhraseProvided("Insira uma frase!")
         
     def __separar_frase(self):
-        len_sentimento = [] #Lista que conterá a polaridade de cada palavra, para posteriormente obter o total, como neutro, positivo ou negativo
+        polaridade = 0 #Lista que conterá a polaridade de cada palavra, para posteriormente obter o total, como neutro, positivo ou negativo
         unknow_words = 0    #Palavras desconhecidas é importante sua contagem, pois, dessa forma um indice de confiança fica mais preciso
         know_words= 0       #Palavras conhecidas, mesma razão das palavras desconhecidas
         
@@ -49,19 +57,17 @@ class NLP(object):
 
                 for value in actual_word.values():
                     
-                    len_sentimento.append(value)
+                    polaridade += value
                     know_words += 1
                     
             else:
                 
                 unknow_words += 1
-                len_sentimento.append(0)
-
-        json_file.close()
+                polaridade += 0
         
-        polarity = sum(len_sentimento)
+        json_file.close()       
 
-        return [polarity, know_words, unknow_words]
+        return [polaridade, know_words, unknow_words]
 
     def __indice_de_confianca(self, phrase_list: list, know_words: list) -> indice_confianca:
         if know_words > 0:
@@ -79,7 +85,8 @@ class NLP(object):
         score = 0
 
         negative_context = ['não', 'nao', 'Não', 'Nao']
-        palavras_neutras = ['gostei', 'gosto']
+        neutral_context = ['que', 'Que']
+        palavras_neutras = ['gostei', 'gosto'] # <- AQUI!!!!!
 
         phrase_list = phrase_list.split()
 
@@ -88,10 +95,14 @@ class NLP(object):
             context1 = int([phrase_list.index(palavra) for palavra in palavras_neutras if palavra in phrase_list][0]) - 1
             if phrase_list[context1] in negative_context:
                 score -= 1
+            elif phrase_list[context1] in neutral_context:
+                score += 0
             else:
                 score += 1
+        
+        overallpolarity += score
 
-        return overallpolarity + score
+        return overallpolarity
 
     def __resumo(self,score:int, cf:float, tw:int, uw:int, msg:str) -> object:
    
@@ -139,5 +150,5 @@ class NLP(object):
 
 if __name__ == "__main__":
     
-    a1 = NLP('Não gostei do pão').process
+    a1 = NLP('Que gosto ruim').process
     print(a1)
