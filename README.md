@@ -10,7 +10,6 @@
   <img src="https://sonarcloud.io/api/project_badges/measure?project=EliasOlie_NLP-Brasil&metric=alert_status">
   <img src="https://sonarcloud.io/api/project_badges/measure?project=EliasOlie_NLP-Brasil&metric=reliability_rating">
   <img src="https://sonarcloud.io/api/project_badges/measure?project=EliasOlie_NLP-Brasil&metric=bugs">
-  <img src="https://sonarcloud.io/api/project_badges/measure?project=EliasOlie_NLP-Brasil&metric=coverage"/>
   <img src="https://sonarcloud.io/api/project_badges/measure?project=EliasOlie_NLP-Brasil&metric=security_rating">
   <img src="https://sonarcloud.io/api/project_badges/measure?project=EliasOlie_NLP-Brasil&metric=sqale_rating">
   <img src="https://sonarcloud.io/api/project_badges/measure?project=EliasOlie_NLP-Brasil&metric=code_smells">
@@ -72,7 +71,35 @@ terão um schematic da api! Como uso um modelo de resposta customizado, ele não
 4. Suporte para o Português(BR)
 Parece até piada, mas, infelizmente não é! Como dito nas moticações do projeto, a nossa linguagem é cheia de nuances, que pequeníssimos detalhes mudam completamente o sentido da frase! Cometi, admito, o erro bobo de ao receber uma frase, a normalizar para os padrões ASCII que removem os acentos e os caracteres especiais como "ç", basicamente ele recebia o UTF-8 "ç" e "substituia" pelo equivalente ASCII "c", só que é precisamente esse tipo de abordagem que faz com que a premissa do projeto falhe, pois, suponhamos que uma empresa de metrô queira usar o serviço, na versão futura que detectará entidades nas frases, então, um cliente escreve o comentário: "Gostei muito do metrô da cidade", na antiga abordagem a frase seria normalizada em ASCII para: "gostei muito do metro da cidade", dependendo da autonomia do processamento, a resposta poderia vincular "metro" a unidade de medida, então o algorítmo "entenderia" que o cliente está satisfeito com a quantidade de m² da cidade! Que falta faz o acento! Não apenas isso, mas como o cristianismo é a religião predominante no nosso país, imagine alguém escreve um comentário do tipo "gostei muito do hamburguer, que Deus abençoe amém, mais molho da próxima vez não faz mal!" o processamento seria "gostei muito do hamburguer, que Deus abencoe amem, mais molho da próxima vez não faz mal!" ao tirar o acento de "amém" vira outra palavra "amem" amem mais molho??? Pode ser até um exemplo tosco, mas eu, na minha experiencia com seres humanos sou cétido a desacreditar que tal comentário não pudesse aparecer e até outros do mesmo tipo! Por esse motivo, resetei o "database" que é um arquivo json, coloquei as opções de encoding para utf-8 e o argumento ensure_ascii quando for fazer um dump de objeto python para json como False resolvendo assim esse problema!
 
+4. Agora também com suporte (inicial) ao processamento de intenções.
+Agora é possível cadastrar frases e atribuir a elas intenções e sentimentos, o processo é bastante simples e em breve será implementado no front-end também (quem sabe não já foi?) para cadastrar intenções (Através da API) basta fazer um POST no endpoint "/stack/review/intents" no seguinte schema:
 
+    ```json
+
+     {
+        "data": {
+          "frase":{
+            "Tipo": "Intenção", 
+            "Sentimento": "Sentimento"
+          }
+     }
+    ```
+    Onde "data" é a chave do json, e deve ser enviado com esse identificador, "frase" é a frase própriamente dita, "Tudo bem?" por exemplo, "Tipo" é o identificador para a intenção 
+    nesse caso ("Tudo bem?") em muitos contextos ele é usado como uma saudação "Olá, tudo bem?" ou apenas o "tudo bem?" então o "Tipo" será "Saudação" e por fim, "Sentimento" se refere a que tipo de sentimento a frase está passando, nesse caso, amigável. Para enviar então a solicitação para ser revisado o formato final do json será:
+
+    ```json
+      {
+        "data": {
+          "Tudo bem?": {
+            "Tipo": "Saudação",
+            "Sentimento":"Amigável"
+          }
+      }
+
+    ```
+    
+    Depois disso a frase sera automáticamente adicionada no json de review e com o passar do tempo irei revisando e adicionando ao json de intenções. Essa feature ainda está em desenvilvimento, portanto, aconselho não usar.
+    Porém com esse advento é possível exxtrair intenções do texto de uma forma bem direta. Basicamente o algoritmo vê a similaridade da frase enviada com as frases cadastradas e retorna aquelas que tenham mais probabilidade, usando inclusive um algoritmo built-in do python, o SequenceMatcher da difflib. Reforço que essa feature estaá em desenvolvimento, portanto não irá funcionar com todas e como todos os outros algorítmos desse projeto não se encaixam em Machine Learning ou IA, mas como dito na motivação do projeto é um modelo estatístico, e nem todo modelo estatístico é machine learning, mas todo modelo de machine learning é estatístico 😉
 # Como usar
 
 🤓 Antes de colocar a mão na prática sugiro a leitura completa para o entendimento de como funciona e como as palavras são classificadas
@@ -95,7 +122,7 @@ dsse endpoint https://nlp-brasil-api.herokuapp.com/processing só aceita o méto
 
 # Exemplos práticos:
 
-* gif do inicio do rep (Usando o postman e mandando para o endpoint)
+* gif do inicio do rep (Usando o postman e mandando para o endpoint de processamento)
 
 * Requests (biblioteca em python) 
 
@@ -103,7 +130,7 @@ dsse endpoint https://nlp-brasil-api.herokuapp.com/processing só aceita o méto
   <img src="https://user-images.githubusercontent.com/63745733/120118781-ab537680-c16a-11eb-8a61-d49681a8a93f.gif">
 </p>
 
-### Código:
+### Código NLP: 
 
 ```python
 import requests
@@ -134,12 +161,53 @@ O formato de saída da api é:
   "error": false
 }
 ```
+### Código Intent:
+![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/63745733/137316371-90e701e2-edc3-4908-9711-8be2b3561033.gif)
+```python
+import requests
 
-A API também pode ser consumida por qualquer biblioteca que funcione de maneira análoga ao requests em python:
+import json
+
+data = {"phrase":"Quanto custa o"}
+
+h={"Content-Type":"application/json"}
+
+resposta = requests.post('https://nlp-brasil-api.herokuapp.com/intent', data=json.dumps(data), headers=h,verify=True)
+
+print(resposta.text)
+
+```
+Resposta
+```json
+{
+    "status": 200,
+    "data": {
+        "Resultado": [
+            {
+                "Intenção": {
+                    "Tipo": "Informação sobre preço",
+                    "Sentimento": "Neutro"
+                },
+                "Probabilidade": 0.8888888888888888
+            }
+        ],
+        "Polaridade": "A frase \"Quanto custa o\" é neutra"
+    },
+    "error": false
+}
+
+```
+## Chamada de API através
+![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/63745733/137316837-1b9bc9c5-0a6d-493f-ad43-764d659c516e.gif)
+
+
+
+A API também pode ser consumida por qualquer biblioteca que funcione de maneira análoga ao requests em python e ao postman:
 
 *  XMLHttpRequest (Javascript)
 *  Axios (Javascript é usado no frontend para consumir a api)
 *  JAXB (Java)
+*  Insominia
 *  Entre outros
 
 # Casos reais:
