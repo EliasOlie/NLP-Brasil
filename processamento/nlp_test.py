@@ -42,7 +42,7 @@ def test_main():
 def test_no_phrase_provided():
     phrase = ""
     with pytest.raises(Application_Exceptions.NoPhraseProvided) as exc_info:
-        proccess = Natural_Language.NLP(phrase).process
+        Natural_Language.NLP(phrase).process
     assert exc_info.type is Application_Exceptions.NoPhraseProvided
 
 
