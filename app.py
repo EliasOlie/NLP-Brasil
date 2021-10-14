@@ -32,6 +32,10 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+@app.get('/')
+def landing():
+    return {"Message":'Olá! para processar frases faça um post no endpoint "/processing"', "error": False}
+
 @app.post('/processing')
 def proc_phrase(phrase: ProccessPhrase):
     try:
