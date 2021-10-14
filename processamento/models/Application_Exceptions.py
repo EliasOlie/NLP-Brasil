@@ -1,2 +1,2 @@
-class NoPhraseProvided(BaseException):
+class NoPhraseProvided(Exception):
     ...

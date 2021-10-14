@@ -24,7 +24,7 @@ try:
 except FileNotFoundError:
     with open('backend/processamento/nlp_database.json', 'r', encoding='utf-8') as json_file:
         dados = json.load(json_file)
-class NLP(object):
+class NLP:
     nlp_instace = NewType('nlp_instace', object)
 
     """
