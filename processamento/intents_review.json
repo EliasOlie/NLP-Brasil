@@ -1,7 +1,1 @@
-{
-    "Olá":{"Tipo":"Saudação", "Sentimento":"Amigável"},
-    "Tchau": {"Tipo":"Finalização", "Sentimento": "Amigável"},
-    "Quanto custa?": {"Tipo":"Informação sobre preço", "Sentimento": "Neutro"},
-    "Amei o ": {"Tipo":"Elogio", "Sentimento": "Muito Positivo!"},
-    "Olá gostaria de saber quanto custa":{"Tipo":"Informação sobre preço", "Sentimento": "Neutro"}
-}
+{"Olá": {"Tipo": "Saudação", "Sentimento": "Amigável"}, "Tchau": {"Tipo": "Finalização", "Sentimento": "Amigável"}, "Quanto custa?": {"Tipo": "Informação sobre preço", "Sentimento": "Neutro"}, "Amei o ": {"Tipo": "Elogio", "Sentimento": "Muito Positivo!"}, "Olá gostaria de saber quanto custa": {"Tipo": "Informação sobre preço", "Sentimento": "Neutro"}, "Oi": {"Tipo": "Saudação", "Sentimento": "Amigável"}}
