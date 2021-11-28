@@ -37,7 +37,7 @@ class NLP:
 
     def __init__(self, frase:str) -> nlp_instace:
 
-        self.frase = frase
+        self.frase = frase.lower()
         self.process: object = self.__processar()
         if len(frase) == 0:
             raise Application_Exceptions.NoPhraseProvided("Insira uma frase!")
