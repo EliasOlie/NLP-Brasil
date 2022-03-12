@@ -23,7 +23,7 @@ testar, porém, em breve teremos mais regras à seguir que demandarão mais test
 def test_main():
     true_test = 0
 
-    with open('./processamento/dataset_test.json', 'r', encoding='utf8') as file:
+    with open('./application/processamento/dataset_test.json', 'r', encoding='utf8') as file:
         testes = json.load(file)
     
     for test_phrase, test_value in testes.items():

@@ -1,6 +1,7 @@
 #Variáveis de ambiente
 .env
 nlp-env
+venv
 
 #Cache do python
 __pycache__

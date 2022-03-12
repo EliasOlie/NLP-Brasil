@@ -4,22 +4,25 @@ from fastapi.middleware.cors import CORSMiddleware
 
 #Libs
 import os
-from models.ReviewIntent import ReviewIntent
+from application.models.ReviewIntent import ReviewIntent
 
 
 # Core do processamento
-from processamento.Natural_Language import NLP
-from processamento.Intents import Intent
+from application.processamento.Natural_Language import NLP
+from application.processamento.Intents import Intent
+
+# Database Adapters
+from application.infra.DB.IntentsDB import IntentsDB
 
 #Responses and other imports
-from models.Phrase import ProccessPhrase
-from models.Intent import ProcessIntent
-from utils.makeissue import make_issue
-from utils.update_file import update_review_file
-from models.Response import Response
-from models.ReviewPhrase import ReviewPhrase
-import processamento.models.Application_Exceptions
-import models.errors as API_ERR
+from application.models.Phrase import ProccessPhrase
+from application.models.Intent import ProcessIntent
+from application.utils.makeissue import make_issue
+from application.utils.update_file import update_review_file
+from application.models.Response import Response
+from application.models.ReviewPhrase import ReviewPhrase
+import application.processamento.models.Application_Exceptions
+import application.models.errors as API_ERR
 
 app = FastAPI()
 
@@ -45,7 +48,7 @@ def proc_phrase(phrase: ProccessPhrase):
     try:
         processed_response = NLP(phrase.phrase).process
         return Response(200, processed_response)
-    except processamento.models.Application_Exceptions.NoPhraseProvided:
+    except application.processamento.models.Application_Exceptions.NoPhraseProvided:
         return Response(422, API_ERR.NO_PHRASE_PROVIDED, True)
 
 
@@ -54,15 +57,16 @@ def debg(phrase):
     try:
         processed_response = NLP(phrase).process
         return Response(200, processed_response)
-    except processamento.models.Application_Exceptions.NoPhraseProvided:
+    except application.processamento.models.Application_Exceptions.NoPhraseProvided:
         return Response(422, API_ERR.NO_PHRASE_PROVIDED, True)
 
 @app.post('/intent')
 def intent_processing(phrase: ProcessIntent):
+    col = IntentsDB.read({"user": "U1"}, {"_id": 0})['Intents']
     try:
-        proc_response = Intent(phrase.phrase).process
+        proc_response = Intent(phrase.phrase, col).process
         return Response(200, proc_response)
-    except processamento.models.Application_Exceptions.NoPhraseProvided:
+    except application.processamento.models.Application_Exceptions.NoPhraseProvided:
         return(422, API_ERR.NO_PHRASE_PROVIDED, True)
 
 @app.post('/stack/review')

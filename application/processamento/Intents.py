@@ -1,3 +1,4 @@
+from operator import index
 from typing import NewType
 import json
 
@@ -22,26 +23,19 @@ def get_probability(palavra_correta: str, palavra_enviada: str) -> float:
 
 class Intent:
     
-    def __init__(self, phrase:str) -> IntentInstance:
+    def __init__(self, phrase:str, collection: list) -> IntentInstance:
         self.phrase = phrase
+        self.collection = collection
         self.phrase_list = self.phrase.split()
         self.process = self.__process()
 
         if len(phrase) == 0:
             raise Application_Exceptions.NoPhraseProvided()
-
-    def __extract_intents(self):
-        try:
-            with open('./processamento/intents.json', 'r', encoding='utf-8') as json_file:
-                dados:dict = json.load(json_file)
-        except FileNotFoundError:
-            with open('backend/processamento/intents.json', 'r', encoding='utf-8') as json_file:
-                dados:dict = json.load(json_file)
-
-        lista_prob = [get_probability(key, self.phrase) for key in dados.keys()]
+   
+    def __extract_intents(self): # Refactor
+        lista_prob = [get_probability(dictionary['Frase'], self.phrase)for dictionary in self.collection]
         provavel = [lista_prob.index(prob) for prob in lista_prob if prob > 0 and prob >= 0.5]
-        lista_index = [key for key in dados.keys()]
-        resultados = [{"Intenção": dados.get(lista_index[prob]), "Probabilidade": lista_prob[prob]} for prob in provavel]
+        resultados = [{"Intenção":self.collection[index(prob)]["Tipo"], "Probablilidade": lista_prob[prob]} for prob in provavel]
 
         polaridade = Natural_Language.NLP(self.phrase).process["Mensagem"]
         if len(provavel) == 0:
@@ -52,5 +46,18 @@ class Intent:
         return self.__extract_intents()
 
 if __name__ == '__main__':
-    a = Intent("Ola").process
-    print(a)#["Resultado"][-1:][0]["Intenção"]["Tipo"]
+    data = [
+        {'Frase': 'Ola', 'Tipo': 'Saudação'},
+        {'Frase': 'Tcau', 'Tipo': 'Finalização'},
+        {'Frase': 'Thca', 'Tipo': 'Finalização'},
+        {'Frase': 'Quanto custa?', 'Tipo': 'Informação sobre preço'},
+        {'Frase': 'Quamto cusa?', 'Tipo': 'Informação sobre preço'},
+        {'Frase': 'Amei o ', 'Tipo': 'Elogio'},
+        {'Frase': 'Ameri o ', 'Tipo': 'Elogio'},
+        {'Frase': 'Olá gostaria de saber quanto custa', 'Tipo': 'Informação sobre preço'},
+        {'Frase': 'Ola gotaria de saber qanto custa', 'Tipo': 'Informação sobre preço'}
+    ]
+
+    
+    a = Intent("Olá", data).process
+    print(a)
