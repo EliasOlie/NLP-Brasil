@@ -1,6 +1,5 @@
 from operator import index
 from typing import NewType
-import json
 
 from difflib import SequenceMatcher
 
@@ -27,7 +26,7 @@ class Intent:
         self.phrase = phrase
         self.collection = collection
         self.phrase_list = self.phrase.split()
-        self.process = self.__process()
+        self.proccess = self.__proccess()
 
         if len(phrase) == 0:
             raise Application_Exceptions.NoPhraseProvided()
@@ -37,12 +36,12 @@ class Intent:
         provavel = [lista_prob.index(prob) for prob in lista_prob if prob > 0 and prob >= 0.5]
         resultados = [{"Intenção":self.collection[index(prob)]["Tipo"], "Probablilidade": lista_prob[prob]} for prob in provavel]
 
-        polaridade = Natural_Language.NLP(self.phrase).process["Mensagem"]
+        polaridade = Natural_Language.NLP(self.phrase).proccess["Mensagem"]
         if len(provavel) == 0:
             resultados.append("Sem dados o suficiente para trazer um resultado confiável 🤖 considere cadastrar essas intenções no endpoint /stack/review/intent")
         return {"Resultado": resultados, "Polaridade": polaridade}   
 
-    def __process(self) -> intent_type:
+    def __proccess(self) -> intent_type:
         return self.__extract_intents()
 
 if __name__ == '__main__':
@@ -59,5 +58,5 @@ if __name__ == '__main__':
     ]
 
     
-    a = Intent("Olá", data).process
+    a = Intent("Olá", data).proccess
     print(a)

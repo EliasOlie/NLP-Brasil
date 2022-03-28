@@ -34,9 +34,9 @@ def test_evaluate():
             dados:dict = json.load(json_file)
     
     for phrase, sentiment in dados.items():
-        test_process = Intent(phrase, test_col).process
+        test_proccess = Intent(phrase, test_col).proccess
 
-        if test_process['Resultado'][0]['Intenção'] == sentiment["Tipo"]:
+        if test_proccess['Resultado'][0]['Intenção'] == sentiment["Tipo"]:
             true_test += 1
         else:
             true_test -= 1
@@ -45,11 +45,11 @@ def test_evaluate():
 
 def test_no_phrase():
     with pytest.raises(Application_Exceptions.NoPhraseProvided) as exc_info:
-        Intent("", test_col).process
+        Intent("", test_col).proccess
     assert exc_info.type is Application_Exceptions.NoPhraseProvided
 
 def test_no_confidence():
-    if Intent("azangara", test_col).process["Resultado"][0] == "Sem dados o suficiente para trazer um resultado confiável 🤖 considere cadastrar essas intenções no endpoint /stack/review/intent":
+    if Intent("azangara", test_col).proccess["Resultado"][0] == "Sem dados o suficiente para trazer um resultado confiável 🤖 considere cadastrar essas intenções no endpoint /stack/review/intent":
         assert True
     else:
         assert False

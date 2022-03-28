@@ -27,9 +27,9 @@ def test_main():
         testes = json.load(file)
     
     for test_phrase, test_value in testes.items():
-        teste_process = Natural_Language.NLP(test_phrase).process     
+        teste_proccess = Natural_Language.NLP(test_phrase).proccess     
 
-        retorno = teste_process["Polaridade"]       
+        retorno = teste_proccess["Polaridade"]       
         
         if test_value["Polaridade"] == retorno:
             true_test += 1
@@ -41,7 +41,7 @@ def test_main():
 
 def test_no_phrase_provided():
     with pytest.raises(Application_Exceptions.NoPhraseProvided) as exc_info:
-        Natural_Language.NLP("").process
+        Natural_Language.NLP("").proccess
     assert exc_info.type is Application_Exceptions.NoPhraseProvided
 
 
